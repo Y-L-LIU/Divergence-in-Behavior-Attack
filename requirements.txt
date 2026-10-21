@@ -1,0 +1,7 @@
+# Install the CUDA build of torch first; see README.md.
+-r requirements-cpu.txt
+torch==2.9.0
+transformers==4.55.2
+tqdm==4.67.3
+huggingface-hub>=0.34,<1.0
+safetensors>=0.4.3

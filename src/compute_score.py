@@ -22,6 +22,10 @@ def compute_score(solution_str, ground_truth) -> float:
             answer = remove_boxed(string_in_last_boxed)
             if is_equiv(answer, ground_truth):
                 retval = 1.0
+        elif "####" in solution_str:
+            # The released MATH prompts explicitly request this answer format.
+            answer = solution_str.rsplit("####", 1)[1].strip().splitlines()[0].strip()
+            retval = float(is_equiv(answer, ground_truth))
     except Exception as e:
         print(e)
 

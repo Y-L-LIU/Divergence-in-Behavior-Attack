@@ -3,7 +3,6 @@ from pathlib import Path
 import numpy as np
 import json
 from sklearn.metrics import roc_curve
-from transformers import AutoTokenizer
 from typing import Dict, List, Optional
 from collections import defaultdict
 import pandas as pd

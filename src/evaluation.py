@@ -150,6 +150,9 @@ def run_evaluation(prompts: List[PromptData], out_dir: Path):
     
     X = np.array([p.to_feature_array() for p in prompts])
     y = np.array([p.label for p in prompts])
+    classes, counts = np.unique(y, return_counts=True)
+    if set(classes) != {0, 1} or counts.min() < 7:
+        raise ValueError("Evaluation needs at least 7 member and 7 nonmember prompts for nested 5-fold CV. Use --skip_eval for a smaller smoke run.")
     
     # if np.isnan(X).any():
     #     print(f"WARNING: Found {np.isnan(X).sum()} NaN values in feature matrix. Imputing with 0.")

@@ -11,8 +11,6 @@ import torch
 import torch.nn.functional as F
 from tqdm.auto import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoProcessor
-from vllm import LLM, SamplingParams
-from qwen_vl_utils import fetch_image
 import pandas as pd
 from .utils import PromptData, compute_score_safe
 from .config import CONF
@@ -26,6 +24,10 @@ def encode_image(img):
     img_bytes = buffer.getvalue()
     img_base64 = base64.b64encode(img_bytes).decode("utf-8")
     return img_base64    
+
+def fetch_image(value):
+    from qwen_vl_utils import fetch_image as load_image
+    return load_image(value)
 
 def _row_to_messages(
     text,
@@ -82,6 +84,7 @@ def generate_responses(
     Output JSONL fields per sample:
       - prompt, response, sample_id, row_id, has_image
     """
+    from vllm import LLM, SamplingParams
     df = pd.read_parquet(df_path)
     # df = df[:10]
     if outfile.exists():
@@ -204,7 +207,7 @@ def _decode_base64_image(b64) -> Image.Image:
 def _compute_token_metrics(logits: torch.Tensor, token_ids: torch.Tensor, temperature: float = 0.7) -> Dict[str, Any]:
     """Helper to compute metrics from a single model's logits."""
     # Apply temperature scaling to logits before softmax
-    temp_logits = logits / temperature
+    temp_logits = logits.float() / temperature
     logp = F.log_softmax(temp_logits, dim=-1)
     probs = logp.exp()
 
@@ -252,8 +255,8 @@ def _build_inputs(prompt: str, response: str, image, tok, device):
         prompt_len    = int(inputs_prompt["input_ids"].shape[1])
         return inputs_full, full_ids, prompt_len
     else:
-        prompt_ids = tok(prompt, return_tensors="pt").input_ids.to(device)
-        resp_ids   = tok(response, return_tensors="pt").input_ids.to(device)
+        prompt_ids = tok(prompt, return_tensors="pt", add_special_tokens=False).input_ids.to(device)
+        resp_ids   = tok(response, return_tensors="pt", add_special_tokens=False).input_ids.to(device)
         full_ids   = torch.cat([prompt_ids, resp_ids], dim=1)
         attn_mask  = torch.ones_like(full_ids)
         inputs_full = {"input_ids": full_ids, "attention_mask": attn_mask}
@@ -261,7 +264,7 @@ def _build_inputs(prompt: str, response: str, image, tok, device):
 
 
 @torch.inference_mode()
-def compute_mia_features(prompt: str, response: str, img, model_ft, model_ref, tok, device) -> Dict[str, float]:
+def compute_mia_features(prompt: str, response: str, img, model_ft, model_ref, tok, device, temperature=CONF.temperature) -> Dict[str, float]:
     """Computes MIA features, now with calibration against a reference model."""
 
     inputs_full, full_ids, prompt_len = _build_inputs(prompt, response, img, tok, device)
@@ -273,6 +276,8 @@ def compute_mia_features(prompt: str, response: str, img, model_ft, model_ref, t
     # Response positions (shifted by one for next-token prediction)
     resp_mask = (labels[:, 1:] != -100)
     token_ids_resp = full_ids[:, 1:][resp_mask]
+    if token_ids_resp.numel() == 0:
+        raise ValueError("Cannot compute token features for an empty response.")
 
     # Forward both models; works for both LM and VLM since inputs_full is a dict
     out_ft  = model_ft(**inputs_full, labels=labels)
@@ -282,8 +287,8 @@ def compute_mia_features(prompt: str, response: str, img, model_ft, model_ref, t
     logits_ref = out_ref.logits[:, :-1, :][resp_mask]
 
     # Compute base metrics for both models
-    metrics_ft = _compute_token_metrics(logits_ft, token_ids_resp, CONF.temperature)
-    metrics_ref = _compute_token_metrics(logits_ref, token_ids_resp, 0.7)  # Reference model uses T=1.0
+    metrics_ft = _compute_token_metrics(logits_ft, token_ids_resp, temperature)
+    metrics_ref = _compute_token_metrics(logits_ref, token_ids_resp, temperature)
 
     # --- Calibrated Metrics (Fine-tuned - Reference) ---
     neg_ll_diff = metrics_ft["neg_ll"] - metrics_ref["neg_ll"]
@@ -297,7 +302,8 @@ def compute_mia_features(prompt: str, response: str, img, model_ft, model_ref, t
     # --- Reference-aware Metrics (calculated using both models) ---
     lp_ft_actual = metrics_ft["token_logp_actual"]
     lp_ref_actual = metrics_ref["token_logp_actual"]
-    rev_kl_div = (torch.exp(lp_ref_actual - lp_ft_actual) - (lp_ref_actual - lp_ft_actual) - 1).mean().item()
+    log_ratio = (lp_ref_actual - lp_ft_actual).clamp(min=-30.0, max=30.0)
+    rev_kl_div = (torch.exp(log_ratio) - log_ratio - 1).mean().item()
     return {
         "neg_log_likelihood": neg_ll_diff,
         "zlib_entropy_ratio": zlib_entropy_ratio,
