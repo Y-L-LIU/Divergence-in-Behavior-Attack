@@ -4,7 +4,7 @@ Code for **Auditing Data Membership in Reinforcement Learning With Verifiable Re
 
 DIBA compares a model after RL fine-tuning with its reference model. It samples responses to labeled member/nonmember prompts, computes reference-calibrated token statistics and verifier scores, and trains a membership predictor on the resulting prompt-level features.
 
-- [Checkpoints: RLMIA/models](https://huggingface.co/RLMIA/models)
+- [Released checkpoints on Hugging Face](https://huggingface.co/RLMIA)
 - [Repository organization plan](docs/cleanup-plan.md)
 - [Validation record](docs/validation.md)
 
@@ -25,7 +25,7 @@ python -m pip install -r requirements.txt
 python audit.py --help
 ```
 
-Versions reflect the inspected server environment. Choose a PyTorch CUDA wheel compatible with your machine if CUDA 12.6 is unsuitable. A clean installation of this exact requirements file has not yet been independently tested.
+The commands install PyTorch with CUDA 12.6. Select a compatible PyTorch CUDA wheel if your machine requires a different version.
 
 For CPU-only evaluation of existing features:
 
@@ -42,25 +42,31 @@ Set `FT_MODEL` to a **merged Hugging Face checkpoint directory**, containing `co
 
 Set `REF_MODEL` to the corresponding model **before RL**. For a target trained from Qwen2.5-3B-Instruct, the reference is `Qwen/Qwen2.5-3B-Instruct`. Both models must have the same tokenizer vocabulary, special-token IDs, and chat formatting.
 
-Exact subdirectories and revisions in `RLMIA/models` still need verification. Hugging Face could not be reached from the inspection environment, so no checkpoint-to-experiment mapping is asserted here. List model directories before downloading weights:
+Models are released as separate repositories under the [RLMIA organization](https://huggingface.co/RLMIA). Select an actual model repository ID, such as `RLMIA/GRPO-3B-MATH`.
+
+| MATH checkpoint | Hugging Face repository |
+| --- | --- |
+| GRPO, 3B | [RLMIA/GRPO-3B-MATH](https://huggingface.co/RLMIA/GRPO-3B-MATH) |
+| GRPO, 7B | [RLMIA/GRPO-7B-MATH](https://huggingface.co/RLMIA/GRPO-7B-MATH) |
+| DAPO, 3B | [RLMIA/DAPO-3B-MATH](https://huggingface.co/RLMIA/DAPO-3B-MATH) |
+| DAPO, 7B | [RLMIA/DAPO-7B-MATH](https://huggingface.co/RLMIA/DAPO-7B-MATH) |
+
+The organization also hosts shadow MATH, Geo3K, instruction-following, Search-R1, and tool-use checkpoints. The [checkpoint inventory](configs/models.json) records all 18 repository IDs, pinned revisions, model architectures, and file names. A published checkpoint may require a task-specific runner; the quick start below is for text MATH.
+
+Download the 3B GRPO MATH target and its Qwen2.5-3B-Instruct reference:
 
 ```bash
-python -c 'from huggingface_hub import list_repo_files; print("\n".join(p for p in list_repo_files("RLMIA/models") if p == "config.json" or p.endswith("/config.json")))'
-```
-
-For a checkpoint stored in a subdirectory, substitute its actual directory and revision:
-
-```bash
-export CKPT_SUBDIR="REPLACE_WITH_VERIFIED_SUBDIRECTORY"
-export CKPT_REVISION="REPLACE_WITH_HF_COMMIT_SHA"
-hf download RLMIA/models --revision "$CKPT_REVISION" \
-  --include "$CKPT_SUBDIR/*" --local-dir checkpoints/rlmia
-export FT_MODEL="$PWD/checkpoints/rlmia/$CKPT_SUBDIR"
-
-# Use this reference only for a target trained from this exact base model.
-hf download Qwen/Qwen2.5-3B-Instruct --local-dir checkpoints/Qwen2.5-3B-Instruct
+hf download RLMIA/GRPO-3B-MATH \
+  --revision a22a23d5fc8d926617b6cefa53d85a4cf5b50fa3 \
+  --local-dir checkpoints/GRPO-3B-MATH
+hf download Qwen/Qwen2.5-3B-Instruct \
+  --revision aa8e72537993ba99e69dfaafa59ed015b17504d1 \
+  --local-dir checkpoints/Qwen2.5-3B-Instruct
+export FT_MODEL="$PWD/checkpoints/GRPO-3B-MATH"
 export REF_MODEL="$PWD/checkpoints/Qwen2.5-3B-Instruct"
 ```
+
+Both repositories are public and can be downloaded without a token.
 
 Already downloaded models can be used by setting these two variables directly. Keep checkpoint directories immutable during a run. The runner records model paths/IDs but does not hash multi-gigabyte weights.
 

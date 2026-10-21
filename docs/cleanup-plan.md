@@ -8,7 +8,7 @@
 - 服务器源码：`/mydata/rlmia/Divergence-in-Behavior-Attack`。
 - 服务器入口：`/mydata/rlmia/run_dib_attack.sh`。
 - 训练和数据构建：`/mydata/rlmia/grpo_run`，含 `toolrl_run` 子目录。
-- 模型发布地址：`https://huggingface.co/RLMIA/models`。网络访问失败，具体子目录和 revision 尚未验证。
+- 模型发布：RLMIA 组织下的 18 个独立仓库。已核对 repo ID、revision、根目录配置和文件清单，见 [configs/models.json](../configs/models.json)。
 
 本次在独立本地分支整理；服务器原仓库及训练目录保持原状。运行检查使用独立临时目录，读取已有 checkpoint 和数据。
 
@@ -23,6 +23,7 @@
 - [x] 将 token 统计转为 FP32，并限制极端 log-ratio；对应服务器新版特征脚本的数值稳定处理。
 - [x] CPU 冒烟脚本及 GPU 最小流程检查，具体证据见 [validation.md](validation.md)。
 - [x] 忽略 runs、results、checkpoints、缓存和日志，保留已有数据文件。
+- [x] 核对 18 个公开模型仓库，README 使用实际 repo ID 和固定 revision；默认从 Hugging Face 官方下载。
 
 历史 `main.py` 及研究脚本暂时保留。新版文本入口只验证了 MATH；没有把未检查的扩展任务标成可复现。
 
@@ -46,7 +47,7 @@ scripts/
   prepare_data/
   training/
 configs/
-  models.json              # HF repo/revision/subfolder/reference/split
+  models.json              # repo/revision/config 已落实；reference/split 待补
   tasks/
 docs/
   cleanup-plan.md
@@ -77,9 +78,9 @@ checkpoints/               # 忽略
 
 这是公开“一条命令运行”示例前最需要补齐的部分。
 
-1. 列出 `RLMIA/models` 中所有实际 checkpoint 目录，仅下载模型卡和配置进行核对。
-2. 为每个模型记录：HF repo、commit revision、subfolder、架构、基座 reference、任务、RL 算法、训练数据 split、是否已合并 adapter、可用审计入口。
-3. 将已核对记录写入 `configs/models.json`，用具体配置替换 README 中的占位目录。
+1. 已核对 RLMIA 组织下的 18 个独立模型仓库及其根目录配置，记录在 `configs/models.json`。
+2. 继续为每个仓库补齐经过确认的基座 reference、训练数据 split、RL 配置和可用审计入口；现有配置与文件清单不能单独证明训练来源。
+3. README 已用 `RLMIA/GRPO-3B-MATH` 及固定 revision 替换占位目录。模型权重和 tokenizer 的完整下载/加载测试仍需按发布仓库进行，不能与服务器本地 checkpoint 的 smoke 记录混为一谈。
 4. 为数据附上来源、版本、行数、SHA-256、划分 seed 和 member/nonmember 定义。HF 模型与训练 split 必须能一一对应。
 5. 单独记录运行环境和训练环境。检查中的服务器 `run_slime_math_3b.sh` 使用 8 个训练 rollout、4,096 最大响应长度；这不能自动当作论文已确认的 16/8,192 主实验配置，也不能直接改写成后者。需要按 checkpoint 来源区分。
 
@@ -136,7 +137,8 @@ checkpoints/               # 忽略
 
 ## P3：发布验收
 
-- [ ] 验证 HF checkpoint 子目录、revision 和模型卡，与数据 split 建立映射。
+- [x] 验证 18 个 HF repo ID、revision、配置和文件清单。
+- [ ] 为发布模型确认 reference 与数据 split 映射，并完成权重下载/加载检查。
 - [ ] 在干净环境照 README 安装并运行一次。
 - [ ] 已声明支持的任务全部有可执行的小规模示例；无外部私有路径。
 - [ ] 缓存输入 schema、特征名称顺序和版本固定。

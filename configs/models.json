@@ -1,0 +1,544 @@
+{
+  "schema_version": 1,
+  "organization": "RLMIA",
+  "scope": "Repository IDs, revisions, root configs, and file inventories; weight contents and training-split mappings are not verified.",
+  "models": [
+    {
+      "repo_id": "RLMIA/GRPO-3B-MATH",
+      "revision": "a22a23d5fc8d926617b6cefa53d85a4cf5b50fa3",
+      "url": "https://huggingface.co/RLMIA/GRPO-3B-MATH",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-7B-MATH",
+      "revision": "cdcae710c39961512943c6852fd383a4457d52b9",
+      "url": "https://huggingface.co/RLMIA/GRPO-7B-MATH",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-3B-MATH",
+      "revision": "9147a12fd8f012cc81a399d7061245f9eea7037c",
+      "url": "https://huggingface.co/RLMIA/DAPO-3B-MATH",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-7B-MATH",
+      "revision": "2f79b144554c59b7f7d290925542462a83f19311",
+      "url": "https://huggingface.co/RLMIA/DAPO-7B-MATH",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-3B-MATH-SHADOW-EASY",
+      "revision": "f134987829e4b7057df59be66a5c35df0a62ce46",
+      "url": "https://huggingface.co/RLMIA/GRPO-3B-MATH-SHADOW-EASY",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-7B-MATH-SHADOW-EASY",
+      "revision": "37a276520b9af1b14ca5cc5745ac6e3ed1512191",
+      "url": "https://huggingface.co/RLMIA/GRPO-7B-MATH-SHADOW-EASY",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-3B-MATH-SHADOW-EASY",
+      "revision": "68e316ec982e2a681c4eba5c9c9167bfed9763ee",
+      "url": "https://huggingface.co/RLMIA/DAPO-3B-MATH-SHADOW-EASY",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-7B-MATH-SHADOW-EASY",
+      "revision": "c2740db298e02a40910e7e127180a84179ead0d6",
+      "url": "https://huggingface.co/RLMIA/DAPO-7B-MATH-SHADOW-EASY",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-3B-MATH-SHADOW-HARD",
+      "revision": "2ea0c4e2a94a5419f33e84b9acdae960ff0ccb2a",
+      "url": "https://huggingface.co/RLMIA/GRPO-3B-MATH-SHADOW-HARD",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-7B-MATH-SHADOW-HARD",
+      "revision": "4b55516399a7161ee5401cd986a014ef5ae5a4f7",
+      "url": "https://huggingface.co/RLMIA/GRPO-7B-MATH-SHADOW-HARD",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-3B-MATH-SHADOW-HARD",
+      "revision": "4546e14db29b4ddd60b7b1d662f439c387cea21f",
+      "url": "https://huggingface.co/RLMIA/DAPO-3B-MATH-SHADOW-HARD",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-7B-MATH-SHADOW-HARD",
+      "revision": "58175b6149023e7a47c9dd1bf38ffdba7608af6e",
+      "url": "https://huggingface.co/RLMIA/DAPO-7B-MATH-SHADOW-HARD",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-7B-VLM-GEO3K",
+      "revision": "0c2eb39605d84a06f382576f83e6d17f78d5edd3",
+      "url": "https://huggingface.co/RLMIA/GRPO-7B-VLM-GEO3K",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2_5_VLForConditionalGeneration"
+      ],
+      "model_type": "qwen2_5_vl",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "preprocessor_config.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "video_preprocessor_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/DAPO-7B-VLM-GEO3K",
+      "revision": "e0222d3f4af4b87db51c8e7f9dfad436279e08b9",
+      "url": "https://huggingface.co/RLMIA/DAPO-7B-VLM-GEO3K",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2_5_VLForConditionalGeneration"
+      ],
+      "model_type": "qwen2_5_vl",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "preprocessor_config.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "video_preprocessor_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-3B-INSTRUCTION-FOLLOWING",
+      "revision": "f92a8c915b000bb12f2a3463c5bc68d768f954f2",
+      "url": "https://huggingface.co/RLMIA/GRPO-3B-INSTRUCTION-FOLLOWING",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-7B-INSTRUCTION-FOLLOWING",
+      "revision": "b22436d7f3c3c73b0b46183d70993f411d386af5",
+      "url": "https://huggingface.co/RLMIA/GRPO-7B-INSTRUCTION-FOLLOWING",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 152064,
+      "files": [
+        ".gitattributes",
+        "added_tokens.json",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00001-of-00004.safetensors",
+        "model-00002-of-00004.safetensors",
+        "model-00003-of-00004.safetensors",
+        "model-00004-of-00004.safetensors",
+        "model.safetensors.index.json",
+        "special_tokens_map.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-3B-SEARCH-R1",
+      "revision": "7781079f763f20fe333c73ec1575bb78c5ab4f1a",
+      "url": "https://huggingface.co/RLMIA/GRPO-3B-SEARCH-R1",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "LICENSE",
+        "README.md",
+        "config.json",
+        "generation_config.json",
+        "merges.txt",
+        "model-00000-of-00002.safetensors",
+        "model-00001-of-00002.safetensors",
+        "model.safetensors.index.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "card_base_model": "Qwen/Qwen2.5-3B",
+      "verified_reference_model": null,
+      "verified_training_split": null
+    },
+    {
+      "repo_id": "RLMIA/GRPO-3B-TOOL-USING",
+      "revision": "a2cfbc61095a704f9d55e1612c7eb79352926d76",
+      "url": "https://huggingface.co/RLMIA/GRPO-3B-TOOL-USING",
+      "subfolder": "",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "model_type": "qwen2",
+      "vocab_size": 151936,
+      "files": [
+        ".gitattributes",
+        "chat_template.jinja",
+        "config.json",
+        "generation_config.json",
+        "model.safetensors",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "card_base_model": null,
+      "verified_reference_model": null,
+      "verified_training_split": null
+    }
+  ]
+}

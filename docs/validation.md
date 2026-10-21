@@ -26,6 +26,7 @@ The inspected environment has no vLLM or qwen-vl-utils installation. The portabl
 | End-to-end GPU run, 8 member + 8 nonmember prompts | Completed, exit code 0 |
 | Four generated response files | 8 records per file; all expected keys present |
 | Sample feature file / prompt feature cache | 16 sample records; shape `(16, 7)`, all finite |
+| RLMIA model inventory | 18 public repositories; revision, root config and file list read for each |
 
 The GPU run used the existing Qwen2.5-3B-Instruct reference and the server's merged MATH GRPO checkpoint `iter_0001139_hf`. It read the first 8 rows of each checked-in MATH split, sampled 1 response per prompt, and capped each response at 16 tokens. It exercised generation, verifier scoring, feature calculation, aggregation, and the inner/outer five-fold classifier evaluation.
 
@@ -47,6 +48,6 @@ No response caches, weights, or resulting numerical performance reports are incl
 - The requirements reflect an existing working environment; a clean install remains a release checklist item.
 - The full 1,269 + 1,269 prompt audit at 8 responses/prompt and a long generation cap was not run.
 - The small, truncated smoke run establishes execution, not model quality or paper-result reproducibility.
-- Hugging Face metadata requests failed from both local and server environments. Checkpoint subdirectories, revisions, and their mapping to paper experiments remain unverified. The GPU test used existing local weights.
+- The model inventory was retrieved through the Hugging Face mirror API and revision-pinned config downloads; user-facing download commands use the official Hugging Face endpoint. Full weights were not downloaded. Reference/training-split mappings remain to be confirmed. The GPU test used existing local weights, not a newly downloaded published model.
 - The vLLM/VLM, ToolRL, Search-R1, code, instruction-following, and transfer workflows have not been validated by this change.
 - Response caches record model paths/IDs, not hashes of weights inside mutable local checkpoint directories.
