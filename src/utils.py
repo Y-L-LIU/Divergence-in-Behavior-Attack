@@ -58,6 +58,9 @@ def compute_score_safe(response: str, label: str, mode='math') -> float:
     elif mode == 'code':
         from .code_score import compute_score
         return compute_score(response, label)
+    elif mode == 'toolrl':
+        from .toolrl_score import compute_score
+        return compute_score(response, label)
     elif mode == 'if':
         from .ifmulti import check
         return check(response, label)
@@ -79,6 +82,10 @@ def load_prompt_data_from_npz(npz_path: Path) -> list[PromptData]:
     labels = data['labels']
     avg_base_scores = data['avg_base_scores']
     avg_ft_scores = data['avg_ft_scores']
+    if (feats.shape[1] == 5
+            and np.allclose(feats[:, -2], avg_base_scores, equal_nan=True)
+            and np.allclose(feats[:, -1], avg_ft_scores, equal_nan=True)):
+        raise ValueError("Legacy five-column cache: use scripts/evaluate_cached.py to preserve its feature layout.")
     prompt_texts = data.get('prompt_texts', [f"prompt_{i}" for i in range(len(labels))])
 
     prompts = []

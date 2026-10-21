@@ -17,7 +17,6 @@ limitations under the License.
 
 import os
 import sys
-print("Python version:", sys.version)  # NOQA
 from collections import defaultdict
 from pprint import pprint
 from .ifeval import *
@@ -335,6 +334,8 @@ def get_score(data):
 
 # check the situation of each case of data
 def check(response, label):
+    if len(label) == 0:
+        raise ValueError("Instruction constraints must not be empty.")
     judges = []
     for constraint in label:
         cls_name = f"{constraint[0]}_{constraint[1]}"
@@ -347,6 +348,7 @@ def check(response, label):
 
 
 def eval_by_code(data_path, mode_type, save_path=None):
+    from .ifeval.data_utils import load_data, data2json_file
     data = load_data(data_path)
     data = pre_process(data, mode_type)
     judge_data = check(data)

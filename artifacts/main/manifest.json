@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "source_archive": "math.zip",
+  "source_archive_sha256": "4864c8b527f89f295631543fe7a967226feb939bf3a31ca3252af4d4afad6846",
+  "temperature_from_archive_path": 0.5,
+  "num_samples": 8,
+  "feature_names": [
+    "neg_log_likelihood",
+    "zlib_entropy_ratio",
+    "reverse_kl_div",
+    "avg_base_score",
+    "avg_ft_score"
+  ],
+  "reference_response_files_in_archive": false,
+  "runs": [
+    {
+      "run": "grpo-3b",
+      "source_prefix": "math_grpo_3b_temp/t=0.5/",
+      "files": [
+        {
+          "path": "grpo-3b/metrics_prompt.npz",
+          "bytes": 265236,
+          "sha256": "492a02ba87767dbb4cbd12f62b6fbd196a14891ccd685e7d6f881a12da2ab881"
+        },
+        {
+          "path": "grpo-3b/evaluation_summary.csv",
+          "bytes": 181,
+          "sha256": "802dbd164465f5bb99af60c0a9fc1f61e181979f9aeb64e5cccbf24281091597"
+        },
+        {
+          "path": "grpo-3b/report_unified_model.txt",
+          "bytes": 292,
+          "sha256": "71deb7c1a030b2cf8fe1e0a20c25ce7fcf7a041a4ae7cd1865a6b512c17b6b9a"
+        },
+        {
+          "path": "grpo-3b/report_specialist_models_individual.txt",
+          "bytes": 884,
+          "sha256": "2e349aeb33ff82266235d6ec996d56e5b8037fcb697e117fbfe56fd69eb4945f"
+        },
+        {
+          "path": "grpo-3b/report_specialist_models_combined.txt",
+          "bytes": 304,
+          "sha256": "b86383ed806df74c420aa0c9547a6dfd055b29f758c36c10147952f5506e8721"
+        },
+        {
+          "path": "grpo-3b/responses_ft_member.jsonl.gz",
+          "bytes": 2300633,
+          "sha256": "b1ac260a5ead695a92efa44c2a27a43bb8519874974725d06fbd38aac110ed60",
+          "uncompressed_sha256": "c9c06967ea04a570521f2e9b5a7c3a7923a536965418660f544c39921e919bd6",
+          "records": 10152
+        },
+        {
+          "path": "grpo-3b/responses_ft_nonmember.jsonl.gz",
+          "bytes": 2698480,
+          "sha256": "4e27801fddb92936b837ff6977af9c605e4a4bcf3572be7fddd53648209771ed",
+          "uncompressed_sha256": "aacb52f74d109d83d97b816589a4a7ab57c1c2354139341cb8f9d30080ef5a47",
+          "records": 10152
+        },
+        {
+          "path": "grpo-3b/computed_features.jsonl.gz",
+          "bytes": 1169561,
+          "sha256": "d921b7f157c2ef10c2c710258ba37cb058c694d9541c46e2b9bd90fae2d1928a",
+          "uncompressed_sha256": "84b283dae1a8702b9e526104273f477f8da1521dbea4de45207c95c3af55d5e9",
+          "records": 20304
+        }
+      ],
+      "feature_shape": [
+        2538,
+        5
+      ],
+      "nonfinite_feature_entries": 0,
+      "member_prompts": 1269,
+      "nonmember_prompts": 1269
+    },
+    {
+      "run": "grpo-7b",
+      "source_prefix": "math_grpo_7b_temp/t=0.5/",
+      "files": [
+        {
+          "path": "grpo-7b/metrics_prompt.npz",
+          "bytes": 265236,
+          "sha256": "e3021fbd1aea63fd5687d3f8ab799d8bd69e13036d5bc51eb188ed9688e62c75"
+        },
+        {
+          "path": "grpo-7b/evaluation_summary.csv",
+          "bytes": 180,
+          "sha256": "dc47f778e2b615a9bcddf698140f598b8f4c863d456566575249f9b5e2ae8a4d"
+        },
+        {
+          "path": "grpo-7b/report_unified_model.txt",
+          "bytes": 292,
+          "sha256": "8146d5640756904b8249c4f23d0f74f8e525724b18e11ac8d36c66ba7b3265e9"
+        },
+        {
+          "path": "grpo-7b/report_specialist_models_individual.txt",
+          "bytes": 884,
+          "sha256": "b29a557c293712423482e10b9f9759f0e6cca73e6f12c21511b25a36bf716d59"
+        },
+        {
+          "path": "grpo-7b/report_specialist_models_combined.txt",
+          "bytes": 304,
+          "sha256": "38b9523a479129d64d232dd44ce1b837309c8bac61dc4ac435f4a78b1f059c86"
+        },
+        {
+          "path": "grpo-7b/responses_ft_member.jsonl.gz",
+          "bytes": 1816268,
+          "sha256": "197cadef23121b2725eeb911d7c321f33e7f8df430aabe7faf4c5946d9d3cce2",
+          "uncompressed_sha256": "3b077d53f9df8bd05cc454f068ea66abfadcafc184461c5ef6710976c3ef05aa",
+          "records": 10152
+        },
+        {
+          "path": "grpo-7b/responses_ft_nonmember.jsonl.gz",
+          "bytes": 2174591,
+          "sha256": "082660e249811ac3c806537a8b818aad968dc4f70d0da89434b95c9e607caadd",
+          "uncompressed_sha256": "f8567ed9cf1ac93e6cb64a912188d0d45f16365e83faf3793764efcbd5d0baf4",
+          "records": 10152
+        },
+        {
+          "path": "grpo-7b/computed_features.jsonl.gz",
+          "bytes": 1123901,
+          "sha256": "e7d682fb7c84689add822f370b60de391b5ddebbb47087fe251bde0d5e38a14f",
+          "uncompressed_sha256": "716bd75d3e573cc45ea98bd9303b38a6bcb10d3b3503c35eaa003c5e05a271ca",
+          "records": 20304
+        }
+      ],
+      "feature_shape": [
+        2538,
+        5
+      ],
+      "nonfinite_feature_entries": 2,
+      "member_prompts": 1269,
+      "nonmember_prompts": 1269
+    },
+    {
+      "run": "dapo-3b",
+      "source_prefix": "math_dapo_3b_temp/t=0.5/",
+      "files": [
+        {
+          "path": "dapo-3b/metrics_prompt.npz",
+          "bytes": 265236,
+          "sha256": "f29e9869eca6c5b7acad46a0a25b38df2e7ddf6d306d6ca87b861e5818ba1384"
+        },
+        {
+          "path": "dapo-3b/evaluation_summary.csv",
+          "bytes": 180,
+          "sha256": "16f70246041b0b9ba9cdfd245ab582a4b003363a49d1e80670227dad0c925e52"
+        },
+        {
+          "path": "dapo-3b/report_unified_model.txt",
+          "bytes": 292,
+          "sha256": "0834f6823f15b26bdaab38dbce5b5d0e091d4ab33e923f59b035e4a6aa36230c"
+        },
+        {
+          "path": "dapo-3b/report_specialist_models_individual.txt",
+          "bytes": 884,
+          "sha256": "25eb08abb9995da49955f1a02038ad46f732c81d1e07efcba7d8293201c83df2"
+        },
+        {
+          "path": "dapo-3b/report_specialist_models_combined.txt",
+          "bytes": 304,
+          "sha256": "e086ea55255b69b32131c84b7c45c7d0a767ba6bd79917b1d2948ab33ef507f5"
+        },
+        {
+          "path": "dapo-3b/responses_ft_member.jsonl.gz",
+          "bytes": 2112436,
+          "sha256": "6e949750e073d27f910000808e5751f6c45de4a393734993cc364e3fa683d55d",
+          "uncompressed_sha256": "6913703a8cfd5ee8d5f542578f227d795f4b1b813cac52809024eab8b10c303c",
+          "records": 10152
+        },
+        {
+          "path": "dapo-3b/responses_ft_nonmember.jsonl.gz",
+          "bytes": 2609915,
+          "sha256": "d79ebd1d25be9c2fb97c3a52d094163ea1be8f98b4914c5e04a56d65c3ab2a0a",
+          "uncompressed_sha256": "2d7d47220a9f7a3897471ddd90bfeb68c8269d92875ab842d4f042cb5246ea15",
+          "records": 10152
+        },
+        {
+          "path": "dapo-3b/computed_features.jsonl.gz",
+          "bytes": 1155442,
+          "sha256": "81cd45cfa442d171501d60bb4f23b21e11faf3d64b0e156e9530546a174a4a15",
+          "uncompressed_sha256": "1af4e2afda720507947a1deaaac38b708b167ffae790d4b3e9c4ad7085d638b2",
+          "records": 20304
+        }
+      ],
+      "feature_shape": [
+        2538,
+        5
+      ],
+      "nonfinite_feature_entries": 1,
+      "member_prompts": 1269,
+      "nonmember_prompts": 1269
+    },
+    {
+      "run": "dapo-7b",
+      "source_prefix": "math_dapo_7b_temp/t=0.5/",
+      "files": [
+        {
+          "path": "dapo-7b/metrics_prompt.npz",
+          "bytes": 265236,
+          "sha256": "193ddc92576c16afa675bb085bb5f5cc82f6cd6be3310e25776ea61e4df57855"
+        },
+        {
+          "path": "dapo-7b/evaluation_summary.csv",
+          "bytes": 180,
+          "sha256": "d4cd74663b2293b183aa6ab5407dcaf290f6b0fe354d0b34fcbab21cf82e6987"
+        },
+        {
+          "path": "dapo-7b/report_unified_model.txt",
+          "bytes": 292,
+          "sha256": "69cbabc5729cd15b5f5778c7144e1e6ead783dce1fd89f72864e61232c0a3456"
+        },
+        {
+          "path": "dapo-7b/report_specialist_models_individual.txt",
+          "bytes": 884,
+          "sha256": "41df44f3305f8b98102a8325a03bbf072f098b89414058353406f85b52c5fc20"
+        },
+        {
+          "path": "dapo-7b/report_specialist_models_combined.txt",
+          "bytes": 304,
+          "sha256": "f7990c2e745cedcaf8eba0d0555c2e6f98ad4156df2d4544a691b0be42662338"
+        },
+        {
+          "path": "dapo-7b/responses_ft_member.jsonl.gz",
+          "bytes": 1849707,
+          "sha256": "b040b2c299681715a705f24377dccddaa8e1af2eb31ce64264ada3e0a558637e",
+          "uncompressed_sha256": "88c6ea65d1cb02c3e305b5a967d541ba3886fe202c99ace57b4e9ee47d8b30c8",
+          "records": 10152
+        },
+        {
+          "path": "dapo-7b/responses_ft_nonmember.jsonl.gz",
+          "bytes": 2372046,
+          "sha256": "232ee6d8537b207a44aa88827e7595256d69104daa3559b58561b554220d1d29",
+          "uncompressed_sha256": "dcf0478a512f0b513f81eb57c01b2cb65f926270b39149a1eed7bf220db6a879",
+          "records": 10152
+        },
+        {
+          "path": "dapo-7b/computed_features.jsonl.gz",
+          "bytes": 1154691,
+          "sha256": "877464d05f1fb9b0fa77e6581b43785f69d45c92575375a183fbba5f64ee0ee5",
+          "uncompressed_sha256": "64d772c16657249dd663d8470292da8162a5316025868b0fcb8bd97af8a808af",
+          "records": 20304
+        }
+      ],
+      "feature_shape": [
+        2538,
+        5
+      ],
+      "nonfinite_feature_entries": 0,
+      "member_prompts": 1269,
+      "nonmember_prompts": 1269
+    }
+  ]
+}

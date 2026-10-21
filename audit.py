@@ -1,4 +1,4 @@
-"""Portable text-only MATH audit using the released feature definitions."""
+"""Portable text-only MATH, Tool Using, and Instruction Following audits."""
 from __future__ import annotations
 
 import argparse
@@ -11,6 +11,7 @@ import sys
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--task", choices=["math", "tool", "instruction"], default="math")
     parser.add_argument("--finetuned", help="Merged Hugging Face target checkpoint directory or model ID")
     parser.add_argument("--reference", help="Matching pre-RL checkpoint; must share the target tokenizer")
     parser.add_argument("--member", type=Path)
@@ -43,7 +44,22 @@ def parse_args():
     return args
 
 
-def load_data(path, limit):
+def load_tokenizer(model_path):
+    from transformers import AutoTokenizer
+    from transformers.models.auto.tokenization_auto import get_tokenizer_config
+
+    config = get_tokenizer_config(model_path, trust_remote_code=True)
+    extra = config.get("extra_special_tokens")
+    kwargs = {}
+    if isinstance(extra, list):
+        # Newer exports store this as a token list; Transformers 4.x expects a
+        # named mapping here and a list under additional_special_tokens.
+        kwargs["extra_special_tokens"] = {}
+        kwargs["additional_special_tokens"] = (config.get("additional_special_tokens") or []) + extra
+    return AutoTokenizer.from_pretrained(model_path, trust_remote_code=True, **kwargs)
+
+
+def load_data(path, limit, task="math"):
     import pandas as pd
 
     df = pd.read_parquet(path)
@@ -53,8 +69,9 @@ def load_data(path, limit):
     if df.empty:
         raise ValueError(f"Empty data: {path}")
     key = "prompt" if "prompt" in df else "conversations"
-    if key not in df or "reward_model" not in df:
-        raise ValueError(f"{path}: need prompt/conversations and reward_model.ground_truth")
+    label_column = "constraints" if task == "instruction" else "reward_model"
+    if key not in df or label_column not in df:
+        raise ValueError(f"{path}: need prompt/conversations and {label_column}")
     if "images" in df:
         raise ValueError("audit.py supports text-only data; Geo3K needs the separate VLM workflow.")
     for row_id, row in df.iterrows():
@@ -64,7 +81,11 @@ def load_data(path, limit):
             raise ValueError(f"{path}, row {row_id}: expected a nonempty list of chat messages")
         if not all(isinstance(m, dict) and isinstance(m.get("content"), str) and m.get("role") for m in messages):
             raise ValueError(f"{path}, row {row_id}: expected role/content text messages")
-        if not isinstance(row["reward_model"], dict) or "ground_truth" not in row["reward_model"]:
+        if task == "instruction":
+            labels = row["constraints"]
+            if len(labels) == 0 or any(len(c) < 3 for c in labels):
+                raise ValueError(f"{path}, row {row_id}: expected nonempty constraint triples")
+        elif not isinstance(row["reward_model"], dict) or "ground_truth" not in row["reward_model"]:
             raise ValueError(f"{path}, row {row_id}: missing ground_truth")
     return df
 
@@ -89,9 +110,15 @@ def ensure_manifest(directory, manifest):
 
 
 def prepare(args):
-    data = {group: load_data(getattr(args, group), args.limit) for group in ("member", "nonmember")}
+    data = {group: load_data(getattr(args, group), args.limit, args.task) for group in ("member", "nonmember")}
+    if args.task == "instruction":
+        from src.ifmulti import get_instance
+        for frame in data.values():
+            for labels in frame["constraints"]:
+                for constraint in labels:
+                    get_instance(f"{constraint[0]}_{constraint[1]}")
     manifest = {
-        "schema": 1, "backend": "transformers", "score_mode": "math-boxed-or-hash",
+        "schema": 2, "backend": "transformers", "task": args.task,
         "reference": args.reference,
         "data_sha256": {group: file_hash(getattr(args, group)) for group in data},
         "num_samples": args.num_samples, "max_tokens": args.max_tokens,
@@ -143,7 +170,7 @@ def generate(args, data):
     if not torch.cuda.is_available():
         raise RuntimeError("Generation requires a CUDA GPU. Use --load_from_npz for CPU evaluation.")
     set_seed(args.seed)
-    tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+    tokenizer = load_tokenizer(model_path)
     model = AutoModelForCausalLM.from_pretrained(
         model_path, torch_dtype=torch.float16, trust_remote_code=True
     ).to("cuda").eval()
@@ -190,8 +217,8 @@ def compute_features(args, data):
         (role, group): read_responses(response_path(args, role, group), len(df), args.num_samples)
         for group, df in data.items() for role in ("base", "ft")
     }
-    tokenizer = AutoTokenizer.from_pretrained(args.finetuned, trust_remote_code=True)
-    ref_tokenizer = AutoTokenizer.from_pretrained(args.reference, trust_remote_code=True)
+    tokenizer = load_tokenizer(args.finetuned)
+    ref_tokenizer = load_tokenizer(args.reference)
     if tokenizer.get_vocab() != ref_tokenizer.get_vocab() or tokenizer.all_special_ids != ref_tokenizer.all_special_ids:
         raise ValueError("Target/reference must use the same tokenizer vocabulary and special token IDs.")
     if not torch.cuda.is_available():
@@ -222,10 +249,11 @@ def compute_features(args, data):
                     )
                     if not all(np.isfinite(value) for value in features.values()):
                         raise ValueError(f"Non-finite features at {group}/{row_id}/{sample_id}")
-                    truth = row["reward_model"]["ground_truth"]
+                    truth = row["constraints"] if args.task == "instruction" else row["reward_model"]["ground_truth"]
+                    score_mode = {"math": "math", "tool": "toolrl", "instruction": "if"}[args.task]
                     record = dict(
-                        features, finetune_score=compute_score_safe(ft["response"], truth, "math"),
-                        base_score=compute_score_safe(base["response"], truth, "math"),
+                        features, finetune_score=compute_score_safe(ft["response"], truth, score_mode),
+                        base_score=compute_score_safe(base["response"], truth, score_mode),
                         prompt=ft["prompt"], row_id=int(row_id), sample_id=sample_id, group=group,
                     )
                     stream.write(json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n")

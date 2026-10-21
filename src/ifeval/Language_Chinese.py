@@ -16,7 +16,9 @@ limitations under the License.
 
 
 import re
-from zhconv import convert
+def convert(text, locale):
+    from zhconv import convert as convert_chinese
+    return convert_chinese(text, locale)
 
 
 class Language_Chinese:

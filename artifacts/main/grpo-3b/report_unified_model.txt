@@ -1,0 +1,9 @@
+--- Unified Model Performance (5-Fold CV) ---
+{
+  "accuracy": "0.6596 \u00b1 0.0200",
+  "f1_score": "0.6574 \u00b1 0.0232",
+  "auc": "0.7128 \u00b1 0.0157",
+  "tpr_at_0.1%_fpr": "0.0733 \u00b1 0.0359",
+  "tpr_at_1.0%_fpr": "0.1229 \u00b1 0.0139",
+  "tpr_at_5.0%_fpr": "0.2135 \u00b1 0.0236"
+}

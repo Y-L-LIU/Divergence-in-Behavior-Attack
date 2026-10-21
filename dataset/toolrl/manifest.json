@@ -1,0 +1,24 @@
+{
+  "source": "server audit split; public member copy has one credential-like value redacted",
+  "files": [
+    {
+      "name": "member.parquet",
+      "rows": 1498,
+      "sha256": "d41744eb3bd9946d1fdd5fd9b849e9cd6133396e612f4c1d9c30ba97f7bfd1b5"
+    },
+    {
+      "name": "nonmember_xlam.parquet",
+      "rows": 1500,
+      "sha256": "628c725ebbebec6f2abd2d25f2eb99c08857ca3721b2cbc56427b784d7c5cac3"
+    }
+  ],
+  "redactions": {
+    "source_sha256": "ee5a0d9cbbcb4022e2e3c1da0b7fc847fd88af5082c10fbfd1f62473c118159f",
+    "redactions": [
+      {
+        "row_id": 787,
+        "replacements": 1
+      }
+    ]
+  }
+}

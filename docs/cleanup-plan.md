@@ -1,6 +1,6 @@
 # 代码仓库整理计划
 
-目标：读者从 GitHub 获取代码、从 Hugging Face 获取 checkpoint 后，能完成数据读取、生成、特征计算和成员推断评估。公开仓库不需要附带论文结果、完整生成缓存或训练日志。
+目标：读者从 GitHub 获取代码、从 Hugging Face 获取 checkpoint 后，能完成数据读取、生成、特征计算和成员推断评估。按当前发布范围，保留四组主实验的原始生成响应和指标；不发布消融、调参、中间 checkpoint 或训练日志。
 
 ## 本次核对范围
 
@@ -23,9 +23,12 @@
 - [x] 将 token 统计转为 FP32，并限制极端 log-ratio；对应服务器新版特征脚本的数值稳定处理。
 - [x] CPU 冒烟脚本及 GPU 最小流程检查，具体证据见 [validation.md](validation.md)。
 - [x] 忽略 runs、results、checkpoints、缓存和日志，保留已有数据文件。
-- [x] 核对 18 个公开模型仓库，README 使用实际 repo ID 和固定 revision；默认从 Hugging Face 官方下载。
+- [x] 核对原有 18 个公开模型仓库，README 默认从 Hugging Face 官方下载。
+- [x] Tool Using 评分器与两份实际数据划分纳入仓库；IF 入口、评分器及合成检查就绪。
+- [x] GLM 后期 60-epoch checkpoint 的文件索引、实际加载与小样本前向检查通过。
+- [x] 主实验归档按四组整理；五列旧格式与七列新格式分开评估。
 
-历史 `main.py` 及研究脚本暂时保留。新版文本入口只验证了 MATH；没有把未检查的扩展任务标成可复现。
+历史 `main.py` 及研究脚本暂时保留。新版入口已支持 MATH、Tool Using、Instruction Following 和 GLM-4-9B；MATH/Tool/GLM 已做 GPU 小样本检查，Instruction Following 的原始划分仍待补充。
 
 ## 文件去向
 
@@ -101,7 +104,7 @@ checkpoints/               # 忽略
 
 ### ToolRL
 
-来源：`run_dib_attack.sh`、`src/toolrl_score.py`、`dataset/toolrl/`、`grpo_run/toolrl_run/`。
+来源：`run_dib_attack.sh`、`src/toolrl_score.py`、`dataset/toolrl/`、`grpo_run/toolrl_run/`。审计评分器和 member/XLAM nonmember 数据已迁入当前仓库；下面保留训练/构建链的后续整理项。
 
 - 保留完整 system/tool 描述及多轮对话，不能沿用旧版只取第一条 content 的处理。
 - 提供 member/nonmember 数据构建脚本和明确的来源对应关系。
@@ -127,12 +130,12 @@ checkpoints/               # 忽略
 - `eval_math_behavior_mia.py` 依赖外部 `grpo_run.math_reward` 和 `slime.rollout.rm_hub.math_utils`。先明确训练 reward 与发布 verifier 的差异，再决定迁移方式。
 - 区分固定 checkpoint 的 predictor cross-validation、重新训练 RL 模型、多 seed predictor、shadow transfer；配置中不要混用这些概念。
 - matched split B 由 `build_math_matched_split_b.py` 构建，保留数据源 revision、排除集合及 manifest。
-- 只迁移脚本和必要数据说明，不复制历史生成缓存和报表。
+- 除用户指定的四组主实验归档外，不复制其它历史生成缓存和报表。
 
 ### Geo3K / code / instruction following
 
 - Geo3K 已有图像 Parquet，但本次文本入口主动拒绝图像数据。需要单独检查 Qwen-VL processor、image bytes 和多模态特征前向。
-- code/IF 当前缺少完整的公开数据准备链。先补来源与 schema，再提供运行命令。
+- code 仍缺少完整数据准备链。IF 的 schema、评分器和运行命令已补齐，原始 member/nonmember 划分由作者继续查找。
 - VLM/code/IF 各做一个独立 smoke fixture，验证后再加入 README 支持列表。
 
 ## P3：发布验收
@@ -145,4 +148,4 @@ checkpoints/               # 忽略
 - [ ] 生成式和缓存式两条路径均有 smoke 检查；无需发布实验结果。
 - [ ] Git 中无新增权重、生成缓存、日志或凭据；第三方许可和版权信息保留。
 
-暂不需要提交：`results/`、`grpo_run/out/`、训练日志、ROC 图、旧 ZIP、完整生成 JSONL、模型权重。它们可以继续保留在研究服务器或相应模型托管平台。
+发布分工：代码、Tool Using 输入数据和主实验轻量指标在 GitHub；主实验生成响应与 sample features 在 HF dataset；GLM 最终权重在独立 HF model 仓库。其它 `results/`、`grpo_run/out/` 中间文件、训练日志、消融图和旧 ZIP 不纳入发布。

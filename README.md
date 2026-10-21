@@ -5,10 +5,11 @@ Code for **Auditing Data Membership in Reinforcement Learning With Verifiable Re
 DIBA compares a model after RL fine-tuning with its reference model. It samples responses to labeled member/nonmember prompts, computes reference-calibrated token statistics and verifier scores, and trains a membership predictor on the resulting prompt-level features.
 
 - [Released checkpoints on Hugging Face](https://huggingface.co/RLMIA)
+- [Archived main experiment responses and metrics](artifacts/main/README.md)
 - [Repository organization plan](docs/cleanup-plan.md)
 - [Validation record](docs/validation.md)
 
-The quick start runs a **text-only MATH audit from existing checkpoints**. It does not require RL training, released response caches, or paper result files. The current evaluator runs a unified predictor with five-fold stratified cross-validation; it does not reproduce every experimental setting in the paper.
+The quick start runs a **text-only MATH audit from existing checkpoints**. Tool Using, Instruction Following, and GLM-4-9B commands are provided below. It does not require RL training, released response caches, or paper result files. The current evaluator runs a unified predictor with five-fold stratified cross-validation; it does not reproduce every experimental setting in the paper.
 
 ## 1. Install
 
@@ -51,7 +52,7 @@ Models are released as separate repositories under the [RLMIA organization](http
 | DAPO, 3B | [RLMIA/DAPO-3B-MATH](https://huggingface.co/RLMIA/DAPO-3B-MATH) |
 | DAPO, 7B | [RLMIA/DAPO-7B-MATH](https://huggingface.co/RLMIA/DAPO-7B-MATH) |
 
-The organization also hosts shadow MATH, Geo3K, instruction-following, Search-R1, and tool-use checkpoints. The [checkpoint inventory](configs/models.json) records all 18 repository IDs, pinned revisions, model architectures, and file names. A published checkpoint may require a task-specific runner; the quick start below is for text MATH.
+The organization also hosts shadow MATH, Geo3K, instruction-following, Search-R1, and tool-use checkpoints. The [checkpoint inventory](configs/models.json) records repository IDs, pinned revisions, model architectures, and file names. A published checkpoint may require a task-specific runner; the quick start below is for text MATH.
 
 Download the 3B GRPO MATH target and its Qwen2.5-3B-Instruct reference:
 
@@ -164,15 +165,90 @@ python audit.py \
 
 Use a fresh output directory when changing models, data, or sampling settings. Manifests check dataset hashes and run options; response validation rejects missing/duplicate sample IDs. Interrupted response writes use `.partial` files and restart that file on the next run. Caches created by the older runner have no matching manifest and should be kept in separate directories.
 
+## 7. Tool Using
+
+Download the released target and use the same Qwen2.5-3B-Instruct reference as above:
+
+```bash
+hf download RLMIA/GRPO-3B-TOOL-USING \
+  --revision a2cfbc61095a704f9d55e1612c7eb79352926d76 \
+  --local-dir checkpoints/GRPO-3B-TOOL-USING
+CUDA_VISIBLE_DEVICES=0 python audit.py --task tool \
+  --finetuned checkpoints/GRPO-3B-TOOL-USING \
+  --reference checkpoints/Qwen2.5-3B-Instruct \
+  --member dataset/toolrl/member.parquet \
+  --nonmember dataset/toolrl/nonmember_xlam.parquet \
+  --out_dir runs/tool-audit
+```
+
+The included server split has 1,498 member and 1,500 nonmember rows. Full system messages, tool descriptions, and conversation turns are retained. The verifier scores tool-call names and arguments; it does not execute tools. It returns the server audit's correctness component, excluding the separate format/length training rewards. See [the data notes](dataset/toolrl/README.md).
+
+For an execution check, append `--limit 2 --num_samples 2 --max_tokens 16 --skip_eval`.
+
+## 8. Instruction Following
+
+Both [3B](https://huggingface.co/RLMIA/GRPO-3B-INSTRUCTION-FOLLOWING) and [7B](https://huggingface.co/RLMIA/GRPO-7B-INSTRUCTION-FOLLOWING) targets are released. Use the corresponding Qwen2.5-Instruct reference of the same size.
+
+```bash
+python -m pip install -r requirements-instruction.txt
+python -m nltk.downloader punkt_tab
+hf download RLMIA/GRPO-7B-INSTRUCTION-FOLLOWING \
+  --revision b22436d7f3c3c73b0b46183d70993f411d386af5 \
+  --local-dir checkpoints/GRPO-7B-INSTRUCTION-FOLLOWING
+hf download Qwen/Qwen2.5-7B-Instruct --local-dir checkpoints/Qwen2.5-7B-Instruct
+CUDA_VISIBLE_DEVICES=0 python audit.py --task instruction \
+  --finetuned checkpoints/GRPO-7B-INSTRUCTION-FOLLOWING \
+  --reference checkpoints/Qwen2.5-7B-Instruct \
+  --member /path/to/instruction/member.parquet \
+  --nonmember /path/to/instruction/nonmember.parquet \
+  --out_dir runs/instruction-audit
+```
+
+Original member/nonmember split files are not yet included. Supply the matching MulDimIF splits. Each row needs `prompt` (or `conversations`) and a nonempty `constraints` list; each constraint has category, type, and rubric text, for example:
+
+```python
+{
+    "prompt": [{"role": "user", "content": "Write a greeting in ALL UPPERCASE."}],
+    "constraints": [["Language", "English: All Uppercase", "Must use all uppercase letters."]],
+}
+```
+
+The verifier averages the per-constraint checks. It supports the repository's existing content, length, language, punctuation, and format rules without an external LLM judge.
+
+For a synthetic execution fixture, run `python scripts/make_instruction_smoke.py --out_dir runs/instruction-fixture` and use its member/nonmember files with `--skip_eval`. Those synthetic labels are not actual training memberships.
+
+## 9. GLM-4-9B MATH
+
+The GLM model-family extension uses the same MATH data interface:
+
+```bash
+hf download RLMIA/GRPO-GLM4-9B-MATH --local-dir checkpoints/GRPO-GLM4-9B-MATH
+hf download zai-org/GLM-4-9B-0414 \
+  --revision 645b8482494e31b6b752272bf7f7f273ef0f3caf \
+  --local-dir checkpoints/GLM-4-9B-0414
+CUDA_VISIBLE_DEVICES=0 python audit.py --task math \
+  --finetuned checkpoints/GRPO-GLM4-9B-MATH \
+  --reference checkpoints/GLM-4-9B-0414 \
+  --member dataset/math-mia/train_half_test_only.parquet \
+  --nonmember dataset/math-mia/test.parquet \
+  --out_dir runs/glm-math-audit
+```
+
+This is the later 60-epoch matched-setting checkpoint, iteration 1,139, with an 8,192-token training response cap. The earlier iteration-779 checkpoint is a separate run. See the released model card for the recorded training configuration. As with other targets, both model copies must fit on the selected GPU during feature extraction.
+
+## 10. Main experiment archives
+
+[artifacts/main](artifacts/main/README.md) contains the original four MATH runs' metrics and reports. Generated target responses and sample features are available from [RLMIA/DIBA-MATH-RESULTS](https://huggingface.co/datasets/RLMIA/DIBA-MATH-RESULTS).
+
+These archived runs use temperature 0.5 and a five-column detector feature matrix. Use `scripts/evaluate_cached.py` for them; the current runner's seven-column loader rejects that legacy layout. The archive notes describe the preserved non-finite values and missing reference-response files.
+
 ## Scope of the current release
 
 | Component | Status |
 | --- | --- |
-| MATH generation → features → unified evaluation | Portable `audit.py` path; see validation record |
-| Existing prompt-feature evaluation | CPU path with synthetic smoke script |
-| Historical vLLM/VLM path (`main.py`) | Retained; not validated in the inspected environment |
-| `baselines.py`, `indivdual.py`, `plot.py`, `convert.py` | Historical utilities; outside the quick start |
-| ToolRL, Search-R1, multi-seed and transfer scripts | Present on the research server; migration tracked in the plan |
-| RL training recipes / checkpoint export | Separate server workflows; not required to audit an existing checkpoint |
-
-Generated responses, experiment reports, and checkpoint weights do not need to be committed to run this workflow.
+| MATH / Tool Using / GLM generation and features | Portable text runner; small GPU checks recorded |
+| Instruction Following | Runner, verifier and synthetic checks; original split files pending |
+| Current and archived feature-cache evaluation | Separate CPU entry points for the two feature layouts |
+| Four main MATH experiments | Original metrics, reports, target responses and sample features |
+| Historical vLLM/VLM path (`main.py`) | Retained; outside the portable quick start |
+| Search-R1, training, transfer and analysis utilities | Separate workflows tracked in the organization plan |

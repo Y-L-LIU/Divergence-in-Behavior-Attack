@@ -1,0 +1,3 @@
+# Preserve the original experiment artifacts and their recorded checksums.
+artifacts/main/** -text
+artifacts/main/*/*.csv whitespace=cr-at-eol

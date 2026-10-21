@@ -1,0 +1,9 @@
+--- Combined Specialist Model Performance (5-Fold CV) ---
+{
+  "accuracy": "0.7431 \u00b1 0.0159",
+  "f1_score": "0.7717 \u00b1 0.0150",
+  "auc": "0.8228 \u00b1 0.0163",
+  "tpr_at_0.1%_fpr": "0.1372 \u00b1 0.0797",
+  "tpr_at_1.0%_fpr": "0.2317 \u00b1 0.0743",
+  "tpr_at_5.0%_fpr": "0.3790 \u00b1 0.0440"
+}

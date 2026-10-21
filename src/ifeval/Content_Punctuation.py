@@ -17,15 +17,9 @@ limitations under the License.
 
 import re
 import string
-import nltk
-
-try:
-    from nltk.tokenize import sent_tokenize
-except ImportError:
-    import nltk
-    nltk.download('punkt')
-    nltk.download('punkt_tab')
-    from nltk.tokenize import sent_tokenize
+def sent_tokenize(text):
+    from nltk.tokenize import sent_tokenize as tokenize
+    return tokenize(text)
 
 
 class Content_Punctuation:
