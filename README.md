@@ -219,6 +219,8 @@ For a synthetic execution fixture, run `python scripts/make_instruction_smoke.py
 
 ## 9. GLM-4-9B MATH
 
+**Checkpoint publication is in progress.** The commands below require the complete weights in the linked model repository; the repository's existence alone does not confirm availability.
+
 The GLM model-family extension uses the same MATH data interface:
 
 ```bash
