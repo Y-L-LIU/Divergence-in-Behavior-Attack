@@ -8,7 +8,7 @@
 - 服务器源码：`/mydata/rlmia/Divergence-in-Behavior-Attack`。
 - 服务器入口：`/mydata/rlmia/run_dib_attack.sh`。
 - 训练和数据构建：`/mydata/rlmia/grpo_run`，含 `toolrl_run` 子目录。
-- 模型发布：RLMIA 组织下的 18 个独立仓库。已核对 repo ID、revision、根目录配置和文件清单，见 [configs/models.json](../configs/models.json)。
+- 模型发布：RLMIA 组织下的 19 个独立仓库。已核对 repo ID、revision、根目录配置和文件清单，见 [configs/models.json](../configs/models.json)。
 
 本次在独立本地分支整理；服务器原仓库及训练目录保持原状。运行检查使用独立临时目录，读取已有 checkpoint 和数据。
 
@@ -140,8 +140,9 @@ checkpoints/               # 忽略
 
 ## P3：发布验收
 
-- [x] 验证 18 个 HF repo ID、revision、配置和文件清单。
-- [ ] 为发布模型确认 reference 与数据 split 映射，并完成权重下载/加载检查。
+- [x] 验证 19 个 HF repo ID、revision、配置和文件清单；新增 GLM 的 16 个发布文件与本地 checkpoint 的大小及 SHA-256 全部一致。
+- [x] GLM 最终 checkpoint 已发布，reference 与 member split 映射已确认；服务器本地加载检查与 HF 文件哈希核验均通过。
+- [ ] 为其余发布模型确认 reference 与数据 split 映射，并完成权重下载/加载检查。
 - [ ] 在干净环境照 README 安装并运行一次。
 - [ ] 已声明支持的任务全部有可执行的小规模示例；无外部私有路径。
 - [ ] 缓存输入 schema、特征名称顺序和版本固定。

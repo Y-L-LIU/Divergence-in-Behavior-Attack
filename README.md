@@ -219,12 +219,14 @@ For a synthetic execution fixture, run `python scripts/make_instruction_smoke.py
 
 ## 9. GLM-4-9B MATH
 
-**Checkpoint publication is in progress.** The commands below require the complete weights in the linked model repository; the repository's existence alone does not confirm availability.
+The complete checkpoint is published at revision `ca52af2f59949c57a33641d6f1028102e6c297b9`. All 16 release files were checked against the validated local checkpoint by size and SHA-256.
 
 The GLM model-family extension uses the same MATH data interface:
 
 ```bash
-hf download RLMIA/GRPO-GLM4-9B-MATH --local-dir checkpoints/GRPO-GLM4-9B-MATH
+hf download RLMIA/GRPO-GLM4-9B-MATH \
+  --revision ca52af2f59949c57a33641d6f1028102e6c297b9 \
+  --local-dir checkpoints/GRPO-GLM4-9B-MATH
 hf download zai-org/GLM-4-9B-0414 \
   --revision 645b8482494e31b6b752272bf7f7f273ef0f3caf \
   --local-dir checkpoints/GLM-4-9B-0414

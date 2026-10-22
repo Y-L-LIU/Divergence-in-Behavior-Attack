@@ -27,6 +27,7 @@ The inspected environment has no vLLM or qwen-vl-utils installation. The portabl
 | Four generated response files | 8 records per file; all expected keys present |
 | Sample feature file / prompt feature cache | 16 sample records; shape `(16, 7)`, all finite |
 | RLMIA model inventory | Initial 18 public repositories; revision, root config and file list read for each |
+| Published GLM checkpoint | Revision `ca52af2f59949c57a33641d6f1028102e6c297b9`; all 16 release files match local sizes and SHA-256, including six weight shards |
 | Tool Using GPU run | 2 member + 2 nonmember prompts, 2 samples each; shape `(4, 7)`, all finite |
 | GLM-4-9B GPU run | Final iteration-1,139 checkpoint; 2 prompts/class, shape `(4, 7)`, all finite |
 | Instruction Following verifier and schema | Uppercase positive/negative examples, empty-rubric rejection, task-schema checks passed |
@@ -53,7 +54,7 @@ The four requested original main MATH experiments are published separately from 
 - The requirements reflect an existing working environment; a clean install remains a release checklist item.
 - The full 1,269 + 1,269 prompt audit at 8 responses/prompt and a long generation cap was not run.
 - The small, truncated smoke run establishes execution, not model quality or paper-result reproducibility.
-- The model inventory was retrieved through the Hugging Face mirror API and revision-pinned config downloads; user-facing download commands use the official Hugging Face endpoint. Full weights were not downloaded. Reference/training-split mappings remain to be confirmed. The GPU test used existing local weights, not a newly downloaded published model.
+- The initial 18-model inventory was retrieved through the Hugging Face mirror API and revision-pinned config downloads; user-facing download commands use the official Hugging Face endpoint. Full weights were not downloaded. Reference/training-split mappings for those initial 18 models remain to be confirmed. The newly published GLM checkpoint has a verified reference and member-split mapping; its public file hashes match the local checkpoint used for the GPU check. The GPU test used existing local weights, not a newly downloaded published model.
 - Full original Instruction Following splits are not available yet; its verifier/schema checks used synthetic constraints. No claim of reproducing its original experiment is made.
 - The vLLM/VLM, Search-R1, code, and transfer workflows remain outside these execution checks.
 - Response caches record model paths/IDs, not hashes of weights inside mutable local checkpoint directories.
